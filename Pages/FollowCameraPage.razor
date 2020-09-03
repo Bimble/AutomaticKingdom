@@ -1,0 +1,62 @@
+﻿@page "/followcamera"
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using System.Threading.Tasks
+@using BabylonJS
+@using BabylonJS.GUI
+@using EventHorizon.Blazor.Server.Interop.Callbacks
+@implements IDisposable;
+<h3>Follow Camera</h3>
+<div>
+    <canvas id="game-window" style="width:100%"></canvas>
+</div>
+@code {
+    private IDictionary<string, AnimationGroup> _animationMap = new Dictionary<string, AnimationGroup>();
+    private AnimationGroup _runningAnimation = null;
+    private Engine _engine;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await CreateScene();
+        }
+    }
+
+    public void Dispose()
+    {
+        _engine?.dispose();
+    }
+
+    public async ValueTask CreateScene()
+    {
+        var canvas = await Canvas.GetElementById(
+            "game-window"
+        );
+
+        var engine = await Engine.NewEngine(
+            canvas,
+            true
+        );
+
+        var scene = await Scene.NewScene(
+            engine
+        );
+
+        //var camera = await FollowCamera.NewArcRotateCamera(
+        //    "ArcRotateCamera",
+        //    (decimal)(System.Math.PI / 2),
+        //    (decimal)(System.Math.PI / 4),
+        //    0,
+        //    await Vector3.NewVector3(0, 1, 0),
+        //    scene
+        //    );
+
+
+        await engine.runRenderLoop(() => Task.Run(() => scene.render(true, false)));
+
+        _engine = engine;
+    }
+
+}

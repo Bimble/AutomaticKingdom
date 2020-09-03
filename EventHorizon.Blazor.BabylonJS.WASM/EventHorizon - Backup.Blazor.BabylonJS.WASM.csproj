@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="EventHorizon.Blazor.BabylonJS.WASM.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="EventHorizon.Blazor.Server.Interop" Version="0.1.0-preview0002" />
   </ItemGroup>
 
